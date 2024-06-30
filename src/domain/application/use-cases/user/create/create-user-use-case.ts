@@ -4,6 +4,8 @@ import { UserRole } from '@/domain/enterprise/entities/user/user-types'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { UsersRepository } from '@/domain/application/repositories/users-repository'
+import { HashGenerator } from '@/domain/cryptography/hash-generator'
+import { UserAlreadyExistsError } from '../errors/user-already-exists'
 
 export interface CreateUserUseCaseRequest {
   name: string
@@ -19,7 +21,10 @@ export interface CreateUserUseCaseResponse {
 
 @Injectable()
 export class CreateUserUseCase {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(
+    private usersRepository: UsersRepository,
+    private hashGenerator: HashGenerator,
+  ) {}
 
   async execute({
     email,
@@ -38,7 +43,15 @@ export class CreateUserUseCase {
       throw new NotAllowedError()
     }
 
-    const user = User.create({ email, name, password, role })
+    const userWithSameEmail = await this.usersRepository.findByEmail(email)
+
+    if (userWithSameEmail) {
+      throw new UserAlreadyExistsError(email)
+    }
+
+    const hashedPassword = await this.hashGenerator.hash(password)
+
+    const user = User.create({ email, name, password: hashedPassword, role })
 
     await this.usersRepository.create(user)
 
