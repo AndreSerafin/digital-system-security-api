@@ -7,11 +7,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  SUPER_ADMIN
+  SYSTEM_ADMIN
+  TECHNICHAL_MANAGER
+}
+
 model User {
-  id       String @id @default(uuid())
+  id String @id @default(uuid())
+
   name     String
   email    String @unique()
   password String
+  role     Role
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  systems   System[]
 
   @@map("users")
+}
+
+enum SystemStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model System {
+  id String @id @default(uuid())
+
+  description             String
+  acronym                 String
+  attendanceEmail         String
+  url                     String
+  status                  SystemStatus
+  lastUpdateJustification String?
+  lastUpdateAuthorId      String?
+  authorId                String?
+
+  createdAt DateTime
+  updatedAt DateTime?
+  User      User?     @relation(fields: [authorId], references: [id])
+
+  @@map("systems")
 }
