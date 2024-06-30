@@ -40,6 +40,16 @@ export class InMemorySystemsRepository implements SystemsRepository {
     return systems
   }
 
+  async save(system: System): Promise<void> {
+    const systemId = system.id.toString()
+
+    const systemIndex = this.items.findIndex(
+      (item) => item.id.toString() === systemId,
+    )
+
+    this.items[systemIndex] = system
+  }
+
   async delete(systemId: string): Promise<void> {
     const systemIndex = this.items.findIndex(
       (item) => item.id.toString() === systemId,

@@ -1,6 +1,6 @@
 import { UniqueEntityId } from '@/core/unique-entity-id'
 import { System, SystemProps } from '@/domain/enterprise/entities/system/system'
-import { Status } from '@/domain/enterprise/entities/system/system-types'
+import { SystemStatus } from '@/domain/enterprise/entities/system/system-types'
 import { faker } from '@faker-js/faker'
 
 export function makeSystem(
@@ -13,7 +13,7 @@ export function makeSystem(
       acronym: faker.lorem.word(),
       attendanceEmail: faker.internet.email(),
       description: faker.lorem.sentence(),
-      status: Status.ACTIVE,
+      status: SystemStatus.ACTIVE,
       url: faker.internet.url(),
       ...override,
     },

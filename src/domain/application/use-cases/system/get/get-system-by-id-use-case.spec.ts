@@ -1,4 +1,4 @@
-import { Status } from '@/domain/enterprise/entities/system/system-types'
+import { SystemStatus } from '@/domain/enterprise/entities/system/system-types'
 import { InMemorySystemsRepository } from 'test/repositories/in-memory-systems-repository'
 import { System } from '@/domain/enterprise/entities/system/system'
 import { GetSystemByIdUseCase } from './get-system-by-id-use-case'
@@ -18,7 +18,7 @@ describe('Fetch Systems Use Case', () => {
       description: 'System-01',
       acronym: 'System-01',
       attendanceEmail: 'attendanceemail1@example.com',
-      status: Status.ACTIVE,
+      status: SystemStatus.ACTIVE,
       url: 'http://fakeurl1.com',
     })
 

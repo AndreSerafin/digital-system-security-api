@@ -1,5 +1,5 @@
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
-import { Status } from '@/domain/enterprise/entities/system/system-types'
+import { SystemStatus } from '@/domain/enterprise/entities/system/system-types'
 import { User } from '@/domain/enterprise/entities/user/user'
 import { UserRole } from '@/domain/enterprise/entities/user/user-types'
 import { InMemorySystemsRepository } from 'test/repositories/in-memory-systems-repository'
@@ -38,7 +38,7 @@ describe('Create System Use Case', () => {
       description: 'Censo escolar web',
       acronym: 'CENSOWEB',
       attendanceEmail: 'attendanceemail@example.com',
-      status: Status.ACTIVE,
+      status: SystemStatus.ACTIVE,
       url: 'http://fakeurl.com',
     })
 
@@ -65,7 +65,7 @@ describe('Create System Use Case', () => {
       description: 'Censo escolar web',
       acronym: 'CENSOWEB',
       attendanceEmail: 'attendanceemail@example.com',
-      status: Status.ACTIVE,
+      status: SystemStatus.ACTIVE,
       url: 'http://fakeurl.com',
     })
 
@@ -74,7 +74,7 @@ describe('Create System Use Case', () => {
       description: 'Censo escolar web',
       acronym: 'CENSOWEB',
       attendanceEmail: 'attendanceemail@example.com',
-      status: Status.ACTIVE,
+      status: SystemStatus.ACTIVE,
       url: 'http://fakeurl.com',
     })
 

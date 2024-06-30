@@ -1,17 +1,16 @@
 import { Optional } from 'src/@types/optional'
 import { Entity } from 'src/core/entity'
 import { UniqueEntityId } from 'src/core/unique-entity-id'
-import { Status } from './system-types'
+import { SystemStatus } from './system-types'
 
 export interface SystemProps {
   description: string
   acronym: string
   attendanceEmail: string
   url: string
-  status: Status
-  newChangeJustification?: string
-  lastChangeJustification?: string
-  lastChangeAuthorId?: string
+  status: SystemStatus
+  lastUpdateJustification?: string
+  lastUpdateAuthorId?: UniqueEntityId
   authorId: UniqueEntityId
 
   createdAt: Date
@@ -29,6 +28,20 @@ export class System extends Entity<SystemProps> {
     )
 
     return system
+  }
+
+  update(system: Partial<SystemProps>) {
+    this.props.acronym = system.acronym ?? this.acronym
+    this.props.attendanceEmail = system.attendanceEmail ?? this.attendanceEmail
+    this.props.description = system.description ?? this.description
+    this.props.url = system.url ?? this.url
+    this.props.lastUpdateAuthorId =
+      system.lastUpdateAuthorId ?? this.lastUpdateAuthorId
+    this.props.lastUpdateJustification =
+      system.lastUpdateJustification ?? this.lastUpdateJustification
+    this.props.status = system.status ?? this.status
+
+    this.touch()
   }
 
   get description() {
@@ -55,16 +68,12 @@ export class System extends Entity<SystemProps> {
     return this.props.authorId
   }
 
-  get lastChangeAuthorId() {
-    return this.props.lastChangeAuthorId
+  get lastUpdateAuthorId() {
+    return this.props.lastUpdateAuthorId
   }
 
-  get lastChangeJustification() {
-    return this.props.lastChangeJustification
-  }
-
-  get newChangeJustification() {
-    return this.props.newChangeJustification
+  get lastUpdateJustification() {
+    return this.props.lastUpdateJustification
   }
 
   get createdAt() {

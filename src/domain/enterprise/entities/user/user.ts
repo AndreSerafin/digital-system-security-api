@@ -51,6 +51,10 @@ export class User extends Entity<UserProps> {
     return this.role === UserRole.SUPER_ADMIN
   }
 
+  public isSystemAdmin() {
+    return this.role === UserRole.SYSTEM_ADMIN
+  }
+
   private touch() {
     this.props.updatedAt = new Date()
   }

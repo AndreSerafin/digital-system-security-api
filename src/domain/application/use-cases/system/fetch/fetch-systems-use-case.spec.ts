@@ -1,4 +1,4 @@
-import { Status } from '@/domain/enterprise/entities/system/system-types'
+import { SystemStatus } from '@/domain/enterprise/entities/system/system-types'
 import { InMemorySystemsRepository } from 'test/repositories/in-memory-systems-repository'
 import { FetchSystemsUseCase } from './fetch-systems-use-case'
 import { System } from '@/domain/enterprise/entities/system/system'
@@ -19,7 +19,7 @@ describe('Fetch Systems Use Case', () => {
         description: 'System-01',
         acronym: 'System-01',
         attendanceEmail: 'attendanceemail1@example.com',
-        status: Status.ACTIVE,
+        status: SystemStatus.ACTIVE,
         url: 'http://fakeurl1.com',
       }),
       System.create({
@@ -27,7 +27,7 @@ describe('Fetch Systems Use Case', () => {
         description: 'System-02',
         acronym: 'System-02',
         attendanceEmail: 'attendanceemail2@example.com',
-        status: Status.ACTIVE,
+        status: SystemStatus.ACTIVE,
         url: 'http://fakeurl2.com',
       }),
       System.create({
@@ -35,7 +35,7 @@ describe('Fetch Systems Use Case', () => {
         description: 'System-03',
         acronym: 'System-03',
         attendanceEmail: 'attendanceemail3@example.com',
-        status: Status.ACTIVE,
+        status: SystemStatus.ACTIVE,
         url: 'http://fakeurl3.com',
       }),
     )
@@ -51,7 +51,7 @@ describe('Fetch Systems Use Case', () => {
         description: 'System-01',
         acronym: 'System-01',
         attendanceEmail: 'attendanceemail1@example.com',
-        status: Status.ACTIVE,
+        status: SystemStatus.ACTIVE,
         url: 'http://fakeurl1.com',
       }),
       System.create({
@@ -59,7 +59,7 @@ describe('Fetch Systems Use Case', () => {
         description: 'System-02',
         acronym: 'System-02',
         attendanceEmail: 'attendanceemail2@example.com',
-        status: Status.ACTIVE,
+        status: SystemStatus.ACTIVE,
         url: 'http://fakeurl2.com',
       }),
       System.create({
@@ -67,7 +67,7 @@ describe('Fetch Systems Use Case', () => {
         description: 'System-03',
         acronym: 'System-03',
         attendanceEmail: 'attendanceemail3@example.com',
-        status: Status.ACTIVE,
+        status: SystemStatus.ACTIVE,
         url: 'http://fakeurl3.com',
       }),
     )

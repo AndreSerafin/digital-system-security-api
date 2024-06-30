@@ -1,60 +1,69 @@
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
-import { UniqueEntityId } from '@/core/unique-entity-id'
 import { SystemsRepository } from '@/domain/application/repositories/systems-repository'
 import { UsersRepository } from '@/domain/application/repositories/users-repository'
 import { System } from '@/domain/enterprise/entities/system/system'
 import { SystemStatus } from '@/domain/enterprise/entities/system/system-types'
 import { Injectable } from '@nestjs/common'
 
-export interface CreateSystemUseCaseRequest {
-  description: string
-  acronym: string
-  attendanceEmail: string
-  url: string
-  status: SystemStatus
-  authorId: string
+export interface EditSystemUseCaseRequest {
+  userId: string
+  systemId: string
+  description?: string
+  acronym?: string
+  attendanceEmail?: string
+  url?: string
+  status?: SystemStatus
+  updateJustification: string
 }
-
-export interface CreateSystemUseCaseResponse {
+export interface EditSystemUseCaseResponse {
   system: System
 }
 
 @Injectable()
-export class CreateSystemUseCase {
+export class EditSystemUseCase {
   constructor(
     private systemsRepository: SystemsRepository,
     private usersRepository: UsersRepository,
   ) {}
 
   async execute({
+    userId,
+    systemId,
     acronym,
     attendanceEmail,
-    authorId,
     description,
     status,
     url,
-  }: CreateSystemUseCaseRequest): Promise<CreateSystemUseCaseResponse> {
-    const currentUser = await this.usersRepository.findById(authorId)
+    updateJustification,
+  }: EditSystemUseCaseRequest): Promise<EditSystemUseCaseResponse> {
+    const currentUser = await this.usersRepository.findById(userId)
 
     if (!currentUser) {
       throw new ResourceNotFoundError()
     }
 
-    if (!currentUser.isSuperAdmin()) {
+    if (!currentUser.isSuperAdmin() && !currentUser.isSystemAdmin()) {
       throw new NotAllowedError()
     }
 
-    const system = System.create({
+    const system = await this.systemsRepository.findById(systemId)
+
+    if (!system) {
+      throw new ResourceNotFoundError()
+    }
+
+    system.update({
       acronym,
       attendanceEmail,
-      authorId: new UniqueEntityId(authorId),
       description,
       status,
       url,
+      lastUpdateAuthorId: currentUser.id,
+      lastUpdateJustification: updateJustification,
     })
 
-    await this.systemsRepository.create(system)
+    await this.systemsRepository.save(system)
 
     return { system }
   }
