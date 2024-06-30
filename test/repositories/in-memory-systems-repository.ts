@@ -12,8 +12,12 @@ export class InMemorySystemsRepository implements SystemsRepository {
     this.items.push(system)
   }
 
-  async findById(systemId: string): Promise<System> {
+  async findById(systemId: string): Promise<System | null> {
     const system = this.items.find((item) => item.id.toString() === systemId)
+
+    if (!system) {
+      return null
+    }
 
     return system
   }

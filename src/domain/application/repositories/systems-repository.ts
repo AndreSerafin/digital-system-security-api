@@ -9,6 +9,7 @@ export interface QueryParams {
 
 export abstract class SystemsRepository {
   abstract create(system: System): Promise<void>
+  abstract findById(systemId: string): Promise<System | null>
   abstract findMany(
     paginationParams: PaginationParams,
     queryParams: Partial<QueryParams>,
