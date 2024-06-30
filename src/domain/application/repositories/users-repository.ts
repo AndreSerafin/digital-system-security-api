@@ -1,3 +1,5 @@
+import { User } from 'src/domain/enterprise/entities/user'
+
 export abstract class UsersRepository {
-  abstract create(): Promise<void>
+  abstract create(user: User): Promise<void>
 }

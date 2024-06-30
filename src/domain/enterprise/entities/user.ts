@@ -8,7 +8,7 @@ interface UserProps {
   password: string
 
   createdAt: Date
-  updatedAt: Date
+  updatedAt?: Date | null
 }
 
 export class User extends Entity<UserProps> {
@@ -19,5 +19,29 @@ export class User extends Entity<UserProps> {
     )
 
     return user
+  }
+
+  get name() {
+    return this.props.name
+  }
+
+  get email() {
+    return this.props.email
+  }
+
+  get password() {
+    return this.props.password
+  }
+
+  get createdAt() {
+    return this.props.createdAt
+  }
+
+  get updatedAt() {
+    return this.props.updatedAt
+  }
+
+  private touch() {
+    this.props.updatedAt = new Date()
   }
 }
