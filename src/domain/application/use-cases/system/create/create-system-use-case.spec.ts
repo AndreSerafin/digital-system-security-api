@@ -4,7 +4,7 @@ import { User } from '@/domain/enterprise/entities/user/user'
 import { UserRole } from '@/domain/enterprise/entities/user/user-types'
 import { InMemorySystemsRepository } from 'test/repositories/in-memory-systems-repository'
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
-import { CreateSystemUseCase } from './create-system'
+import { CreateSystemUseCase } from './create-system-use-case'
 
 let systemsRepository: InMemorySystemsRepository
 let usersRepository: InMemoryUsersRepository
@@ -52,18 +52,24 @@ describe('Create System Use Case', () => {
 
   it('should not be able to create a system as system admin or techninical resposible', async () => {
     const systemAdminSystem = User.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
+      name: 'John Doe Sys ADM',
+      email: 'johndoeSysAdm@example.com',
       password: '123456',
       role: UserRole.SYSTEM_ADMIN,
     })
+    const techninicalManager = User.create({
+      name: 'John Doe Tech MNG',
+      email: 'johndoeTechMng@example.com',
+      password: '123456',
+      role: UserRole.TECHINICAL_MANAGER,
+    })
 
-    usersRepository.items.push(systemAdminSystem)
+    usersRepository.items.push(systemAdminSystem, techninicalManager)
 
-    const systemAdminSystemId = systemAdminSystem.id.toString()
+    const systemAdminUserId = systemAdminSystem.id.toString()
 
-    const result = createSystemUseCase.execute({
-      authorId: systemAdminSystemId,
+    const systemAdminResult = createSystemUseCase.execute({
+      authorId: systemAdminUserId,
       description: 'Censo escolar web',
       acronym: 'CENSOWEB',
       attendanceEmail: 'attendanceemail@example.com',
@@ -71,6 +77,16 @@ describe('Create System Use Case', () => {
       url: 'http://fakeurl.com',
     })
 
-    expect(result).rejects.toThrow(NotAllowedError)
+    const techninicalManagerResult = createSystemUseCase.execute({
+      authorId: systemAdminUserId,
+      description: 'Censo escolar web',
+      acronym: 'CENSOWEB',
+      attendanceEmail: 'attendanceemail@example.com',
+      status: Status.ACTIVE,
+      url: 'http://fakeurl.com',
+    })
+
+    expect(systemAdminResult).rejects.toThrow(NotAllowedError)
+    expect(techninicalManagerResult).rejects.toThrow(NotAllowedError)
   })
 })

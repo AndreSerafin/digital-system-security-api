@@ -15,7 +15,9 @@ export interface CreateSystemUseCaseRequest {
   authorId: string
 }
 
-export interface CreateSystemUseCaseResponse {}
+export interface CreateSystemUseCaseResponse {
+  system: System
+}
 
 @Injectable()
 export class CreateSystemUseCase {
@@ -31,7 +33,7 @@ export class CreateSystemUseCase {
     description,
     status,
     url,
-  }: CreateSystemUseCaseRequest) {
+  }: CreateSystemUseCaseRequest): Promise<CreateSystemUseCaseResponse> {
     const currentUser = await this.usersRepository.findById(authorId)
 
     if (!currentUser) {
@@ -52,5 +54,7 @@ export class CreateSystemUseCase {
     })
 
     await this.systemsRepository.create(system)
+
+    return { system }
   }
 }

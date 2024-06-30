@@ -1,5 +1,5 @@
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
-import { CreateUserUseCase } from './create-user'
+import { CreateUserUseCase } from './create-user-use-case'
 import { UserRole } from '@/domain/enterprise/entities/user/user-types'
 import { User } from '@/domain/enterprise/entities/user/user'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'

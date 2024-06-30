@@ -13,7 +13,9 @@ export interface CreateUserUseCaseRequest {
   userId: string
 }
 
-export interface CreateUserUseCaseResponse {}
+export interface CreateUserUseCaseResponse {
+  user: User
+}
 
 @Injectable()
 export class CreateUserUseCase {
@@ -25,7 +27,7 @@ export class CreateUserUseCase {
     password,
     role,
     userId,
-  }: CreateUserUseCaseRequest) {
+  }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
     const currentUser = await this.usersRepository.findById(userId)
 
     if (!currentUser) {
@@ -39,5 +41,7 @@ export class CreateUserUseCase {
     const user = User.create({ email, name, password, role })
 
     await this.usersRepository.create(user)
+
+    return { user }
   }
 }

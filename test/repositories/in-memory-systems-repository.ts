@@ -5,8 +5,6 @@ export class InMemorySystemsRepository implements SystemsRepository {
   public items: System[] = []
 
   async create(system: System): Promise<void> {
-    console.log('===> system', system)
-
     this.items.push(system)
   }
 
