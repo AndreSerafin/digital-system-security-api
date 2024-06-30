@@ -1,5 +1,6 @@
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import { UniqueEntityId } from '@/core/unique-entity-id'
 import { SystemsRepository } from '@/domain/application/repositories/systems-repository'
 import { UsersRepository } from '@/domain/application/repositories/users-repository'
 import { System } from '@/domain/enterprise/entities/system/system'
@@ -47,7 +48,7 @@ export class CreateSystemUseCase {
     const system = System.create({
       acronym,
       attendanceEmail,
-      authorId,
+      authorId: new UniqueEntityId(authorId),
       description,
       status,
       url,

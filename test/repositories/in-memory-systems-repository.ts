@@ -39,4 +39,12 @@ export class InMemorySystemsRepository implements SystemsRepository {
 
     return systems
   }
+
+  async delete(systemId: string): Promise<void> {
+    const systemIndex = this.items.findIndex(
+      (item) => item.id.toString() === systemId,
+    )
+
+    this.items.splice(systemIndex)
+  }
 }

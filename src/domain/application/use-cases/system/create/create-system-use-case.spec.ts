@@ -5,6 +5,7 @@ import { UserRole } from '@/domain/enterprise/entities/user/user-types'
 import { InMemorySystemsRepository } from 'test/repositories/in-memory-systems-repository'
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
 import { CreateSystemUseCase } from './create-system-use-case'
+import { makeUser } from 'test/factories/make-user'
 
 let systemsRepository: InMemorySystemsRepository
 let usersRepository: InMemoryUsersRepository
@@ -51,22 +52,13 @@ describe('Create System Use Case', () => {
   })
 
   it('should not be able to create a system as system admin or techninical resposible', async () => {
-    const systemAdminSystem = User.create({
-      name: 'John Doe Sys ADM',
-      email: 'johndoeSysAdm@example.com',
-      password: '123456',
-      role: UserRole.SYSTEM_ADMIN,
-    })
-    const techninicalManager = User.create({
-      name: 'John Doe Tech MNG',
-      email: 'johndoeTechMng@example.com',
-      password: '123456',
-      role: UserRole.TECHINICAL_MANAGER,
-    })
+    const systemAdminSystem = makeUser({ role: UserRole.SYSTEM_ADMIN })
+    const techninicalManager = makeUser({ role: UserRole.TECHINICAL_MANAGER })
 
     usersRepository.items.push(systemAdminSystem, techninicalManager)
 
     const systemAdminUserId = systemAdminSystem.id.toString()
+    const techninicalManagerUserId = techninicalManager.id.toString()
 
     const systemAdminResult = createSystemUseCase.execute({
       authorId: systemAdminUserId,
@@ -78,7 +70,7 @@ describe('Create System Use Case', () => {
     })
 
     const techninicalManagerResult = createSystemUseCase.execute({
-      authorId: systemAdminUserId,
+      authorId: techninicalManagerUserId,
       description: 'Censo escolar web',
       acronym: 'CENSOWEB',
       attendanceEmail: 'attendanceemail@example.com',

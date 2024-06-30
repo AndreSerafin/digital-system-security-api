@@ -3,7 +3,7 @@ import { Entity } from 'src/core/entity'
 import { UniqueEntityId } from 'src/core/unique-entity-id'
 import { Status } from './system-types'
 
-interface SystemProps {
+export interface SystemProps {
   description: string
   acronym: string
   attendanceEmail: string
@@ -12,7 +12,7 @@ interface SystemProps {
   newChangeJustification?: string
   lastChangeJustification?: string
   lastChangeAuthorId?: string
-  authorId: string
+  authorId: UniqueEntityId
 
   createdAt: Date
   updatedAt?: Date | null
