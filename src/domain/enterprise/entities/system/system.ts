@@ -1,11 +1,7 @@
 import { Optional } from 'src/@types/optional'
 import { Entity } from 'src/core/entity'
 import { UniqueEntityId } from 'src/core/unique-entity-id'
-
-enum Status {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
-}
+import { Status } from './system-types'
 
 interface SystemProps {
   description: string
@@ -13,10 +9,10 @@ interface SystemProps {
   attendanceEmail: string
   url: string
   status: Status
-  authorId: string
-  lastChangeAuthorId?: string
-  lastChangeJustification?: string
   newChangeJustification?: string
+  lastChangeJustification?: string
+  lastChangeAuthorId?: string
+  authorId: string
 
   createdAt: Date
   updatedAt?: Date | null
