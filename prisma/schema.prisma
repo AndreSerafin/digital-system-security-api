@@ -10,7 +10,7 @@ datasource db {
 enum Role {
   SUPER_ADMIN
   SYSTEM_ADMIN
-  TECHNICHAL_MANAGER
+  TECHINICAL_MANAGER
 }
 
 model User {
@@ -19,7 +19,7 @@ model User {
   name     String
   email    String @unique()
   password String
-  role     Role
+  role     Role   @default(TECHINICAL_MANAGER)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime?
