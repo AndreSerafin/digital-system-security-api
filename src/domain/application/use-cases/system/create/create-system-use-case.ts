@@ -1,5 +1,5 @@
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import { UserNotFoundError } from '@/core/errors/user-not-found-error'
 import { UniqueEntityId } from '@/core/unique-entity-id'
 import { SystemsRepository } from '@/domain/application/repositories/systems-repository'
 import { UsersRepository } from '@/domain/application/repositories/users-repository'
@@ -38,7 +38,7 @@ export class CreateSystemUseCase {
     const currentUser = await this.usersRepository.findById(authorId)
 
     if (!currentUser) {
-      throw new ResourceNotFoundError()
+      throw new UserNotFoundError()
     }
 
     if (!currentUser.isSuperAdmin()) {

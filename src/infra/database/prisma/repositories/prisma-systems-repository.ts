@@ -14,6 +14,7 @@ export class PrismaSystemsRepository implements SystemsRepository {
 
   async create(system: System): Promise<void> {
     const data = PrismaSystemMapper.toPrisma(system)
+
     await this.prisma.system.create({ data })
   }
 

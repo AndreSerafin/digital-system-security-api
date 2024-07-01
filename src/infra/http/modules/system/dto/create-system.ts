@@ -5,7 +5,6 @@ import { z } from 'nestjs-zod/z'
 export const createsystemUserBodySchema = z.object({
   acronym: z.string(),
   attendanceEmail: z.string().email(),
-  authorId: z.string(),
   description: z.string(),
   status: z.nativeEnum(SystemStatus),
   url: z.string().url(),

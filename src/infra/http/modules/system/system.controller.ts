@@ -1,8 +1,10 @@
 import { CreateSystemUseCase } from '@/domain/application/use-cases/system/create/create-system-use-case'
 import { Body, Controller, Post } from '@nestjs/common'
 import { CreateSystemUserBodySchema } from './dto/create-system'
+import { CurrentUser } from '@/infra/auth/current-user-decorator'
+import { UserPayload } from '@/infra/auth/jwt.strategy'
 
-@Controller()
+@Controller('/systems')
 export class SystemController {
   constructor(private createSystemUseCase: CreateSystemUseCase) {}
 
@@ -12,16 +14,16 @@ export class SystemController {
     {
       acronym,
       attendanceEmail,
-      authorId,
       description,
       status,
       url,
     }: CreateSystemUserBodySchema,
+    @CurrentUser() user: UserPayload,
   ) {
     this.createSystemUseCase.execute({
       acronym,
       attendanceEmail,
-      authorId,
+      authorId: user.sub,
       description,
       status,
       url,
