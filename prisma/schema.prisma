@@ -43,7 +43,7 @@ model System {
   status                  SystemStatus
   lastUpdateJustification String?
   lastUpdateAuthorId      String?
-  authorId                String?
+  authorId                String
 
   createdAt DateTime
   updatedAt DateTime?

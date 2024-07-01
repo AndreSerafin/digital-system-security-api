@@ -5,29 +5,64 @@ import {
 } from '@/domain/application/repositories/systems-repository'
 import { System } from '@/domain/enterprise/entities/system/system'
 import { Injectable } from '@nestjs/common'
+import { PrismaService } from '../prisma.service'
+import { PrismaSystemMapper } from '../mappers/sytem-mapper'
 
 @Injectable()
 export class PrismaSystemsRepository implements SystemsRepository {
-  create(system: System): Promise<void> {
-    throw new Error('Method not implemented.')
+  constructor(private prisma: PrismaService) {}
+
+  async create(system: System): Promise<void> {
+    const data = PrismaSystemMapper.toPrisma(system)
+    await this.prisma.system.create({ data })
   }
 
-  findById(systemId: string): Promise<System | null> {
-    throw new Error('Method not implemented.')
+  async findById(systemId: string): Promise<System | null> {
+    const system = await this.prisma.system.findFirst({
+      where: { id: systemId },
+    })
+
+    if (!system) {
+      return null
+    }
+
+    return PrismaSystemMapper.toDomain(system)
   }
 
-  delete(systemId: string): Promise<void> {
-    throw new Error('Method not implemented.')
+  async delete(systemId: string): Promise<void> {
+    await this.prisma.system.delete({
+      where: { id: systemId },
+    })
   }
 
-  save(system: System): Promise<void> {
-    throw new Error('Method not implemented.')
+  async save(system: System): Promise<void> {
+    const data = PrismaSystemMapper.toPrisma(system)
+
+    await this.prisma.system.update({
+      where: {
+        id: system.id.toString(),
+      },
+      data,
+    })
   }
 
-  findMany(
-    paginationParams: PaginationParams,
-    queryParams: Partial<QueryParams>,
+  async findMany(
+    { page }: PaginationParams,
+    { acronym, attendanceEmail, description }: Partial<QueryParams>,
   ): Promise<System[]> {
-    throw new Error('Method not implemented.')
+    const systems = await this.prisma.system.findMany({
+      where: {
+        acronym: { contains: acronym, mode: 'insensitive' },
+        attendanceEmail: { contains: attendanceEmail, mode: 'insensitive' },
+        description: { contains: description, mode: 'insensitive' },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+    })
+
+    return systems.map(PrismaSystemMapper.toDomain)
   }
 }

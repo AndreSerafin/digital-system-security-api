@@ -9,8 +9,8 @@ export interface SystemProps {
   attendanceEmail: string
   url: string
   status: SystemStatus
-  lastUpdateJustification?: string
-  lastUpdateAuthorId?: UniqueEntityId
+  lastUpdateJustification?: string | null
+  lastUpdateAuthorId?: UniqueEntityId | null
   authorId: UniqueEntityId
 
   createdAt: Date
