@@ -65,7 +65,6 @@ describe('Create User Use Case', () => {
     })
 
     const hashedPassword = await fakeHasher.hash('123456')
-    console.log(usersRepository.items[1])
 
     expect(usersRepository.items[1].password).toEqual(hashedPassword)
   })

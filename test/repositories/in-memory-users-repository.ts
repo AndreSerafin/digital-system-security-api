@@ -1,4 +1,7 @@
-import { UsersRepository } from '@/domain/application/repositories/users-repository'
+import {
+  QueryParams,
+  UsersRepository,
+} from '@/domain/application/repositories/users-repository'
 import { User } from '@/domain/enterprise/entities/user/user'
 
 export class InMemoryUsersRepository implements UsersRepository {
@@ -26,5 +29,17 @@ export class InMemoryUsersRepository implements UsersRepository {
     }
 
     return user
+  }
+
+  async findMany(queryParams: Partial<QueryParams>): Promise<User[]> {
+    const { email, name, role } = queryParams
+    const filters = (item: User) =>
+      (email !== undefined ? item.email === email : true) &&
+      (name !== undefined ? item.name === name : true) &&
+      (role !== undefined ? item.role === role : true)
+
+    const users = this.items.filter(filters)
+
+    return users
   }
 }
