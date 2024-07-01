@@ -3,7 +3,7 @@ import { CreateFirstSuperAdminUserUseCase } from './create-first-super-admin-use
 import { UserRole } from '@/domain/enterprise/entities/user/user-types'
 import { FakeHasher } from 'test/cryptography/fake-hasher'
 import { makeUser } from 'test/factories/make-user'
-import { UserAlreadyExistsError } from '../errors/user-already-exists'
+import { UserAlreadyExistsError } from '../exceptions/user-already-exists'
 
 let fakeHasher: FakeHasher
 let usersRepository: InMemoryUsersRepository

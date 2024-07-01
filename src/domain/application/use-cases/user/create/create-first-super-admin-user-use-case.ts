@@ -3,7 +3,7 @@ import { User } from '@/domain/enterprise/entities/user/user'
 import { UserRole } from '@/domain/enterprise/entities/user/user-types'
 import { UsersRepository } from '@/domain/application/repositories/users-repository'
 import { HashGenerator } from '@/domain/cryptography/hash-generator'
-import { UserAlreadyExistsError } from '../errors/user-already-exists'
+import { UserAlreadyExistsException } from '../exceptions/user-already-exists-exception'
 
 export interface CreateFirstSuperAdminUserUseCaseRequest {
   name: string
@@ -32,12 +32,12 @@ export class CreateFirstSuperAdminUserUseCase {
     })
 
     if (superAdminUsers.length !== 0) {
-      throw new UserAlreadyExistsError(UserRole.SUPER_ADMIN)
+      throw new UserAlreadyExistsException(UserRole.SUPER_ADMIN)
     }
     const userWithSameEmail = await this.usersRepository.findByEmail(email)
 
     if (userWithSameEmail) {
-      throw new UserAlreadyExistsError(email)
+      throw new UserAlreadyExistsException(email)
     }
 
     const hashedPassword = await this.hashGenerator.hash(password)

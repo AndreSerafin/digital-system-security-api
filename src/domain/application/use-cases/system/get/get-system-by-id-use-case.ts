@@ -1,4 +1,4 @@
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import { ResourceNotFoundException } from '@/core/exceptions/resource-not-found-exception'
 import { SystemsRepository } from '@/domain/application/repositories/systems-repository'
 import { System } from '@/domain/enterprise/entities/system/system'
 import { Injectable } from '@nestjs/common'
@@ -20,7 +20,7 @@ export class GetSystemByIdUseCase {
     const system = await this.systemsRepository.findById(systemId)
 
     if (!system) {
-      throw new ResourceNotFoundError()
+      throw new ResourceNotFoundException()
     }
 
     return { system }

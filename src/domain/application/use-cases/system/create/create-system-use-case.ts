@@ -1,11 +1,11 @@
-import { NotAllowedError } from '@/core/errors/not-allowed-error'
-import { UserNotFoundError } from '@/core/errors/user-not-found-error'
+import { NotAllowedException } from '@/core/exceptions/not-allowed-exception'
 import { UniqueEntityId } from '@/core/unique-entity-id'
 import { SystemsRepository } from '@/domain/application/repositories/systems-repository'
 import { UsersRepository } from '@/domain/application/repositories/users-repository'
 import { System } from '@/domain/enterprise/entities/system/system'
 import { SystemStatus } from '@/domain/enterprise/entities/system/system-types'
 import { Injectable } from '@nestjs/common'
+import { UserNotFoundException } from '../../user/exceptions/user-not-found-exception'
 
 export interface CreateSystemUseCaseRequest {
   description: string
@@ -38,11 +38,11 @@ export class CreateSystemUseCase {
     const currentUser = await this.usersRepository.findById(authorId)
 
     if (!currentUser) {
-      throw new UserNotFoundError()
+      throw new UserNotFoundException()
     }
 
     if (!currentUser.isSuperAdmin()) {
-      throw new NotAllowedError()
+      throw new NotAllowedException()
     }
 
     const system = System.create({

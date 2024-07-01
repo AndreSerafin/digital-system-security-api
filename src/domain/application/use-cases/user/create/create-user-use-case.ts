@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { User } from '@/domain/enterprise/entities/user/user'
 import { UserRole } from '@/domain/enterprise/entities/user/user-types'
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
-import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { ResourceNotFoundException } from '@/core/exceptions/resource-not-found-exception'
+import { NotAllowedException } from '@/core/exceptions/not-allowed-exception'
 import { UsersRepository } from '@/domain/application/repositories/users-repository'
 import { HashGenerator } from '@/domain/cryptography/hash-generator'
-import { UserAlreadyExistsError } from '../errors/user-already-exists'
+import { UserAlreadyExistsException } from '../exceptions/user-already-exists-exception'
 
 export interface CreateUserUseCaseRequest {
   name: string
@@ -36,17 +36,17 @@ export class CreateUserUseCase {
     const currentUser = await this.usersRepository.findById(currentUserId)
 
     if (!currentUser) {
-      throw new ResourceNotFoundError()
+      throw new ResourceNotFoundException()
     }
 
     if (!currentUser.isSuperAdmin()) {
-      throw new NotAllowedError()
+      throw new NotAllowedException()
     }
 
     const userWithSameEmail = await this.usersRepository.findByEmail(email)
 
     if (userWithSameEmail) {
-      throw new UserAlreadyExistsError(email)
+      throw new UserAlreadyExistsException(email)
     }
 
     const hashedPassword = await this.hashGenerator.hash(password)

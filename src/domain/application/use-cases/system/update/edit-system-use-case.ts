@@ -1,5 +1,5 @@
-import { NotAllowedError } from '@/core/errors/not-allowed-error'
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import { NotAllowedException } from '@/core/exceptions/not-allowed-exception'
+import { ResourceNotFoundException } from '@/core/exceptions/resource-not-found-exception'
 import { SystemsRepository } from '@/domain/application/repositories/systems-repository'
 import { UsersRepository } from '@/domain/application/repositories/users-repository'
 import { System } from '@/domain/enterprise/entities/system/system'
@@ -40,17 +40,17 @@ export class EditSystemUseCase {
     const currentUser = await this.usersRepository.findById(userId)
 
     if (!currentUser) {
-      throw new ResourceNotFoundError()
+      throw new ResourceNotFoundException()
     }
 
     if (!currentUser.isSuperAdmin() && !currentUser.isSystemAdmin()) {
-      throw new NotAllowedError()
+      throw new NotAllowedException()
     }
 
     const system = await this.systemsRepository.findById(systemId)
 
     if (!system) {
-      throw new ResourceNotFoundError()
+      throw new ResourceNotFoundException()
     }
 
     system.update({
