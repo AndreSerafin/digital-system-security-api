@@ -6,7 +6,7 @@ import { UniqueEntityId } from '@/core/unique-entity-id'
 import { makeSystem } from 'test/factories/make-system'
 import { makeUser } from 'test/factories/make-user'
 import { UserRole } from '@/domain/enterprise/entities/user/user-types'
-import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { NotAllowedException } from '@/core/exceptions/not-allowed-exception'
 
 let usersRepository: InMemoryUsersRepository
 let systemsRepository: InMemorySystemsRepository
@@ -122,6 +122,6 @@ describe('Edit Systems Use Case', () => {
       updateJustification: 'Update justification edited by Super Admin',
     })
 
-    expect(result).rejects.toThrow(NotAllowedError)
+    expect(result).rejects.toThrow(NotAllowedException)
   })
 })

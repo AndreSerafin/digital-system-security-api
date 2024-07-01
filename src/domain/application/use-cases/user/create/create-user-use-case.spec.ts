@@ -2,7 +2,7 @@ import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repos
 import { CreateUserUseCase } from './create-user-use-case'
 import { UserRole } from '@/domain/enterprise/entities/user/user-types'
 import { User } from '@/domain/enterprise/entities/user/user'
-import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { NotAllowedException } from '@/core/exceptions/not-allowed-exception'
 import { FakeHasher } from 'test/cryptography/fake-hasher'
 
 let fakeHasher: FakeHasher
@@ -89,6 +89,6 @@ describe('Create User Use Case', () => {
       role: UserRole.TECHINICAL_MANAGER,
     })
 
-    expect(result).rejects.toThrow(NotAllowedError)
+    expect(result).rejects.toThrow(NotAllowedException)
   })
 })

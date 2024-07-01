@@ -2,18 +2,16 @@ import { SystemStatus } from '@/domain/enterprise/entities/system/system-types'
 import { ZodValidationPipe } from '@/infra/http/pipes/pipes/zod-validation-pipe'
 import { z } from 'nestjs-zod/z'
 
-export const createsystemUserBodySchema = z.object({
+export const createSystemBodySchema = z.object({
   acronym: z.string(),
-  attendanceEmail: z.string().email(),
+  attendance_email: z.string().email(),
   description: z.string(),
   status: z.nativeEnum(SystemStatus),
   url: z.string().url(),
 })
 
-export const createsystemUserBodyValidationPipe = new ZodValidationPipe(
-  createsystemUserBodySchema,
+export const createSystemBodyValidationPipe = new ZodValidationPipe(
+  createSystemBodySchema,
 )
 
-export type CreateSystemUserBodySchema = z.infer<
-  typeof createsystemUserBodySchema
->
+export type CreateSystemBodySchema = z.infer<typeof createSystemBodySchema>

@@ -3,7 +3,7 @@ import { CreateFirstSuperAdminUserUseCase } from './create-first-super-admin-use
 import { UserRole } from '@/domain/enterprise/entities/user/user-types'
 import { FakeHasher } from 'test/cryptography/fake-hasher'
 import { makeUser } from 'test/factories/make-user'
-import { UserAlreadyExistsError } from '../exceptions/user-already-exists'
+import { UserAlreadyExistsException } from '../exceptions/user-already-exists-exception'
 
 let fakeHasher: FakeHasher
 let usersRepository: InMemoryUsersRepository
@@ -44,6 +44,6 @@ describe('Create User Use Case', () => {
           email: 'johndoe2@example.com',
           password: '123456',
         }),
-    ).rejects.toThrow(UserAlreadyExistsError)
+    ).rejects.toThrow(UserAlreadyExistsException)
   })
 })

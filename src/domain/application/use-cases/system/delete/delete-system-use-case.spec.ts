@@ -1,4 +1,4 @@
-import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { NotAllowedException } from '@/core/exceptions/not-allowed-exception'
 import { UniqueEntityId } from '@/core/unique-entity-id'
 import { UserRole } from '@/domain/enterprise/entities/user/user-types'
 import { makeSystem } from 'test/factories/make-system'
@@ -66,7 +66,7 @@ describe('Delete System Use Case', () => {
       systemId: 'system-01',
     })
 
-    expect(systemAdminResult).rejects.toThrow(NotAllowedError)
-    expect(techninicalManagerResult).rejects.toThrow(NotAllowedError)
+    expect(systemAdminResult).rejects.toThrow(NotAllowedException)
+    expect(techninicalManagerResult).rejects.toThrow(NotAllowedException)
   })
 })

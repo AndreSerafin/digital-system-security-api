@@ -1,7 +1,7 @@
 import { SystemStatus } from '@/domain/enterprise/entities/system/system-types'
 import { InMemorySystemsRepository } from 'test/repositories/in-memory-systems-repository'
 import { FetchSystemsUseCase } from './fetch-systems-use-case'
-import { System } from '@/domain/enterprise/entities/system/system'
+import { makeSystem } from 'test/factories/make-system'
 
 let systemsRepository: InMemorySystemsRepository
 let fetchSystemsUseCase: FetchSystemsUseCase
@@ -13,32 +13,7 @@ describe('Fetch Systems Use Case', () => {
   })
 
   it('should be able to fetch systems', async () => {
-    systemsRepository.items.push(
-      System.create({
-        authorId: 'author-01',
-        description: 'System-01',
-        acronym: 'System-01',
-        attendanceEmail: 'attendanceemail1@example.com',
-        status: SystemStatus.ACTIVE,
-        url: 'http://fakeurl1.com',
-      }),
-      System.create({
-        authorId: 'author-02',
-        description: 'System-02',
-        acronym: 'System-02',
-        attendanceEmail: 'attendanceemail2@example.com',
-        status: SystemStatus.ACTIVE,
-        url: 'http://fakeurl2.com',
-      }),
-      System.create({
-        authorId: 'author-03',
-        description: 'System-03',
-        acronym: 'System-03',
-        attendanceEmail: 'attendanceemail3@example.com',
-        status: SystemStatus.ACTIVE,
-        url: 'http://fakeurl3.com',
-      }),
-    )
+    systemsRepository.items.push(makeSystem(), makeSystem(), makeSystem())
 
     const result = await fetchSystemsUseCase.execute({ page: 1 })
     expect(result.systems).toHaveLength(3)
@@ -46,24 +21,21 @@ describe('Fetch Systems Use Case', () => {
 
   it('should be able to filter systems', async () => {
     systemsRepository.items.push(
-      System.create({
-        authorId: 'author-01',
+      makeSystem({
         description: 'System-01',
         acronym: 'System-01',
         attendanceEmail: 'attendanceemail1@example.com',
         status: SystemStatus.ACTIVE,
         url: 'http://fakeurl1.com',
       }),
-      System.create({
-        authorId: 'author-02',
+      makeSystem({
         description: 'System-02',
         acronym: 'System-02',
         attendanceEmail: 'attendanceemail2@example.com',
         status: SystemStatus.ACTIVE,
         url: 'http://fakeurl2.com',
       }),
-      System.create({
-        authorId: 'author-03',
+      makeSystem({
         description: 'System-03',
         acronym: 'System-03',
         attendanceEmail: 'attendanceemail3@example.com',

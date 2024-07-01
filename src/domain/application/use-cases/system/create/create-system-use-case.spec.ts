@@ -1,4 +1,4 @@
-import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { NotAllowedException } from '@/core/exceptions/not-allowed-exception'
 import { SystemStatus } from '@/domain/enterprise/entities/system/system-types'
 import { User } from '@/domain/enterprise/entities/user/user'
 import { UserRole } from '@/domain/enterprise/entities/user/user-types'
@@ -78,7 +78,7 @@ describe('Create System Use Case', () => {
       url: 'http://fakeurl.com',
     })
 
-    expect(systemAdminResult).rejects.toThrow(NotAllowedError)
-    expect(techninicalManagerResult).rejects.toThrow(NotAllowedError)
+    expect(systemAdminResult).rejects.toThrow(NotAllowedException)
+    expect(techninicalManagerResult).rejects.toThrow(NotAllowedException)
   })
 })
