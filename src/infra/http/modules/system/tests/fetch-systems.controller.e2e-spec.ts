@@ -71,7 +71,6 @@ describe('Fetch Systems Controller (E2E)', () => {
     const systemsOnDatabase = await prisma.system.findMany()
 
     expect(systemsOnDatabase).toBeTruthy()
-    console.log(systemsOnDatabase)
 
     expect(systemsOnDatabase).toHaveLength(5)
     expect(response.body).toEqual({
