@@ -4,12 +4,14 @@ import {
   AuthenticateUserBodySchema,
   authenticateUserBodyValidationPipe,
 } from './dto/authenticate-user'
+import { Public } from '@/infra/auth/public'
 
 @Controller('sessions')
 export class SessionController {
   constructor(private authenticateUserUseCase: AuthenticateUserUseCase) {}
 
   @Post()
+  @Public()
   async authenticate(
     @Body(authenticateUserBodyValidationPipe)
     { email, password }: AuthenticateUserBodySchema,

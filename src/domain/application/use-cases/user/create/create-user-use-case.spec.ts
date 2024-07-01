@@ -29,7 +29,7 @@ describe('Create User Use Case', () => {
     const superAdminUserId = superAdminUser.id.toString()
 
     await createUserUseCase.execute({
-      userId: superAdminUserId,
+      currentUserId: superAdminUserId,
       name: 'John Doe',
       email: 'johndoe2@example.com',
       password: '123456',
@@ -57,7 +57,7 @@ describe('Create User Use Case', () => {
     const superAdminUserId = superAdminUser.id.toString()
 
     await createUserUseCase.execute({
-      userId: superAdminUserId,
+      currentUserId: superAdminUserId,
       name: 'John Doe',
       email: 'johndoe2@example.com',
       password: '123456',
@@ -82,7 +82,7 @@ describe('Create User Use Case', () => {
     const systemAdminUserId = systemAdminUser.id.toString()
 
     const result = createUserUseCase.execute({
-      userId: systemAdminUserId,
+      currentUserId: systemAdminUserId,
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: '123456',

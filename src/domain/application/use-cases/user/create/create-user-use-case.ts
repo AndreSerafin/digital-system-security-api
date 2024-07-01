@@ -12,7 +12,7 @@ export interface CreateUserUseCaseRequest {
   password: string
   email: string
   role: UserRole
-  userId: string
+  currentUserId: string
 }
 
 export interface CreateUserUseCaseResponse {
@@ -31,9 +31,9 @@ export class CreateUserUseCase {
     name,
     password,
     role,
-    userId,
+    currentUserId,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
-    const currentUser = await this.usersRepository.findById(userId)
+    const currentUser = await this.usersRepository.findById(currentUserId)
 
     if (!currentUser) {
       throw new ResourceNotFoundError()

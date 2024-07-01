@@ -4,6 +4,8 @@ import {
   CreateAccountBodySchema,
   createAccountBodyValidationPipe,
 } from './dto/create-account'
+import { CurrentUser } from '@/infra/auth/current-user-decorator'
+import { UserPayload } from '@/infra/auth/jwt.strategy'
 
 @Controller('accounts')
 export class AccountController {
@@ -11,6 +13,7 @@ export class AccountController {
 
   @Post()
   async create(
+    @CurrentUser() user: UserPayload,
     @Body(createAccountBodyValidationPipe)
     { email, name, password, role }: CreateAccountBodySchema,
   ) {
@@ -19,7 +22,7 @@ export class AccountController {
       name,
       password,
       role,
-      userId: 'a5493793-f1cc-424b-aee1-d679c255ba76',
+      currentUserId: user.sub,
     })
   }
 }
