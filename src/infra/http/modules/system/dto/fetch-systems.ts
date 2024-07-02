@@ -1,4 +1,4 @@
-import { ZodValidationPipe } from '@/infra/http/pipes/pipes/zod-validation-pipe'
+import { createZodDto } from 'nestjs-zod'
 import { z } from 'nestjs-zod/z'
 
 export const fetchSystemsQueryParamsSchema = z.object({
@@ -13,10 +13,6 @@ export const fetchSystemsQueryParamsSchema = z.object({
   description: z.string().optional(),
 })
 
-export const fetchSystemsQueryParamsValidationPipe = new ZodValidationPipe(
+export class FetchSystemsDTO extends createZodDto(
   fetchSystemsQueryParamsSchema,
-)
-
-export type FetchSystemsQueryParamsSchema = z.infer<
-  typeof fetchSystemsQueryParamsSchema
->
+) {}

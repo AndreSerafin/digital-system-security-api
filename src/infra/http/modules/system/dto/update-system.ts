@@ -1,5 +1,5 @@
 import { SystemStatus } from '@/domain/enterprise/entities/system/system-types'
-import { ZodValidationPipe } from '@/infra/http/pipes/pipes/zod-validation-pipe'
+import { createZodDto } from 'nestjs-zod'
 import { z } from 'nestjs-zod/z'
 
 export const updateSystemBodySchema = z.object({
@@ -11,8 +11,4 @@ export const updateSystemBodySchema = z.object({
   update_justification: z.string(),
 })
 
-export const updateSystemBodyValidationPipe = new ZodValidationPipe(
-  updateSystemBodySchema,
-)
-
-export type UpdateSystemBodySchema = z.infer<typeof updateSystemBodySchema>
+export class UpdateSystemUserDTO extends createZodDto(updateSystemBodySchema) {}

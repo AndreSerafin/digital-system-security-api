@@ -1,4 +1,4 @@
-import { ZodValidationPipe } from '@/infra/http/pipes/pipes/zod-validation-pipe'
+import { createZodDto } from 'nestjs-zod'
 import { z } from 'nestjs-zod/z'
 
 export const authenticateUserBodySchema = z.object({
@@ -6,10 +6,6 @@ export const authenticateUserBodySchema = z.object({
   password: z.string(),
 })
 
-export const authenticateUserBodyValidationPipe = new ZodValidationPipe(
+export class AuthenticateUserDTO extends createZodDto(
   authenticateUserBodySchema,
-)
-
-export type AuthenticateUserBodySchema = z.infer<
-  typeof authenticateUserBodySchema
->
+) {}

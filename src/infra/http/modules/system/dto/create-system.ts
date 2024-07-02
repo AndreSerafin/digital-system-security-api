@@ -1,5 +1,5 @@
 import { SystemStatus } from '@/domain/enterprise/entities/system/system-types'
-import { ZodValidationPipe } from '@/infra/http/pipes/pipes/zod-validation-pipe'
+import { createZodDto } from 'nestjs-zod'
 import { z } from 'nestjs-zod/z'
 
 export const createSystemBodySchema = z.object({
@@ -10,8 +10,4 @@ export const createSystemBodySchema = z.object({
   url: z.string().url(),
 })
 
-export const createSystemBodyValidationPipe = new ZodValidationPipe(
-  createSystemBodySchema,
-)
-
-export type CreateSystemBodySchema = z.infer<typeof createSystemBodySchema>
+export class CreateSystemUserDTO extends createZodDto(createSystemBodySchema) {}

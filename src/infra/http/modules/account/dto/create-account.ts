@@ -1,5 +1,5 @@
 import { UserRole } from '@/domain/enterprise/entities/user/user-types'
-import { ZodValidationPipe } from '@/infra/http/pipes/pipes/zod-validation-pipe'
+import { createZodDto } from 'nestjs-zod'
 import { z } from 'nestjs-zod/z'
 
 export const createAccountBodySchema = z.object({
@@ -9,8 +9,4 @@ export const createAccountBodySchema = z.object({
   role: z.nativeEnum(UserRole),
 })
 
-export const createAccountBodyValidationPipe = new ZodValidationPipe(
-  createAccountBodySchema,
-)
-
-export type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
+export class CreateAccountDTO extends createZodDto(createAccountBodySchema) {}

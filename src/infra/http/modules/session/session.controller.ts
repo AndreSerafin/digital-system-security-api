@@ -1,11 +1,10 @@
 import { AuthenticateUserUseCase } from '@/domain/application/use-cases/user/authenticate/authenticate-user-use-case'
 import { Body, Controller, Post } from '@nestjs/common'
-import {
-  AuthenticateUserBodySchema,
-  authenticateUserBodyValidationPipe,
-} from './dto/authenticate-user'
 import { Public } from '@/infra/auth/public'
+import { ApiTags } from '@nestjs/swagger'
+import { AuthenticateUserDTO } from './dto/authenticate-user'
 
+@ApiTags('sessions')
 @Controller('sessions')
 export class SessionController {
   constructor(private authenticateUserUseCase: AuthenticateUserUseCase) {}
@@ -13,9 +12,10 @@ export class SessionController {
   @Post()
   @Public()
   async authenticate(
-    @Body(authenticateUserBodyValidationPipe)
-    { email, password }: AuthenticateUserBodySchema,
+    @Body()
+    body: AuthenticateUserDTO,
   ) {
+    const { email, password } = body
     const { accessToken } = await this.authenticateUserUseCase.execute({
       email,
       password,

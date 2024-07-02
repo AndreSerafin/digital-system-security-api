@@ -10,26 +10,21 @@ import {
   Post,
   Query,
 } from '@nestjs/common'
-import {
-  CreateSystemBodySchema,
-  createSystemBodyValidationPipe,
-} from './dto/create-system'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { FetchSystemsUseCase } from '@/domain/application/use-cases/system/fetch/fetch-systems-use-case'
-import {
-  FetchSystemsQueryParamsSchema,
-  fetchSystemsQueryParamsValidationPipe,
-} from './dto/fetch-systems'
+
 import { GetSystemByIdUseCase } from '@/domain/application/use-cases/system/get/get-system-by-id-use-case'
 import { DeleteSystemUseCase } from '@/domain/application/use-cases/system/delete/delete-system-use-case'
-import {
-  UpdateSystemBodySchema,
-  updateSystemBodyValidationPipe,
-} from './dto/update-system'
+
 import { EditSystemUseCase } from '@/domain/application/use-cases/system/update/edit-system-use-case'
 import { SystemPresenter } from '../../presenters/comment-presentert'
+import { ApiTags } from '@nestjs/swagger'
+import { CreateSystemUserDTO } from './dto/create-system'
+import { FetchSystemsDTO } from './dto/fetch-systems'
+import { UpdateSystemUserDTO } from './dto/update-system'
 
+@ApiTags('systems')
 @Controller('/systems')
 export class SystemController {
   constructor(
@@ -42,8 +37,8 @@ export class SystemController {
 
   @Post()
   async create(
-    @Body(createSystemBodyValidationPipe)
-    body: CreateSystemBodySchema,
+    @Body()
+    body: CreateSystemUserDTO,
     @CurrentUser() user: UserPayload,
   ) {
     const { acronym, attendance_email, description, status, url } = body
@@ -60,8 +55,8 @@ export class SystemController {
 
   @Get()
   async fetch(
-    @Query(fetchSystemsQueryParamsValidationPipe)
-    queryParams: FetchSystemsQueryParamsSchema,
+    @Query()
+    queryParams: FetchSystemsDTO,
   ) {
     const { page, acronym, attendance_email, description } = queryParams
     const result = await this.fetchSystemsUseCase.execute({
@@ -104,8 +99,8 @@ export class SystemController {
   async update(
     @Param('systemId') systemId: string,
     @CurrentUser() user: UserPayload,
-    @Body(updateSystemBodyValidationPipe)
-    body: UpdateSystemBodySchema,
+    @Body()
+    body: UpdateSystemUserDTO,
   ) {
     const {
       acronym,
