@@ -6,6 +6,7 @@ import { System } from '@/domain/enterprise/entities/system/system'
 import { SystemStatus } from '@/domain/enterprise/entities/system/system-types'
 import { Injectable } from '@nestjs/common'
 import { UserNotFoundException } from '../../user/exceptions/user-not-found-exception'
+import { SystemAlreadyExistsException } from '../exceptions/system-already-exists-exception'
 
 export interface CreateSystemUseCaseRequest {
   description: string
@@ -43,6 +44,15 @@ export class CreateSystemUseCase {
 
     if (!currentUser.isSuperAdmin()) {
       throw new NotAllowedException()
+    }
+
+    if (attendanceEmail) {
+      const systemWithSameEmail =
+        await this.systemsRepository.findByEmail(attendanceEmail)
+
+      if (systemWithSameEmail) {
+        throw new SystemAlreadyExistsException(attendanceEmail)
+      }
     }
 
     const system = System.create({

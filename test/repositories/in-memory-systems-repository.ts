@@ -22,6 +22,16 @@ export class InMemorySystemsRepository implements SystemsRepository {
     return system
   }
 
+  async findByEmail(email: string): Promise<System | null> {
+    const system = this.items.find((item) => item.attendanceEmail === email)
+
+    if (!system) {
+      return null
+    }
+
+    return system
+  }
+
   async findMany(
     { page }: PaginationParams,
     queryParams: Partial<QueryParams>,

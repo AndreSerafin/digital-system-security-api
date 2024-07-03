@@ -8,6 +8,7 @@ import { UserAlreadyExistsExceptionFilter } from './exceptions/user-already-exis
 import { NotAllowedExceptionFilter } from './exceptions/not-allowed-exception-filter'
 import { ZodValidationPipe } from 'nestjs-zod'
 import { DocumentConfig } from './docs-config'
+import { SystemAlreadyExistsExceptionFilter } from './exceptions/system-already-exists-exception-filter'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -22,6 +23,7 @@ async function bootstrap() {
     new UserNotFoundExceptionFilter(),
     new ResourceNotFoundExceptionFilter(),
     new UserAlreadyExistsExceptionFilter(),
+    new SystemAlreadyExistsExceptionFilter(),
     new NotAllowedExceptionFilter(),
   )
   await app.listen(envService.get('PORT'))

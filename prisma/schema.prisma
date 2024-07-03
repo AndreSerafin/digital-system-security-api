@@ -38,7 +38,7 @@ model System {
 
   description             String
   acronym                 String
-  attendanceEmail         String?      @unique()
+  attendanceEmail         String?
   url                     String
   status                  SystemStatus
   lastUpdateJustification String?

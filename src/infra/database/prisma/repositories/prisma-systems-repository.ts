@@ -30,6 +30,18 @@ export class PrismaSystemsRepository implements SystemsRepository {
     return PrismaSystemMapper.toDomain(system)
   }
 
+  async findByEmail(email: string): Promise<System | null> {
+    const system = await this.prisma.system.findFirst({
+      where: { attendanceEmail: email },
+    })
+
+    if (!system) {
+      return null
+    }
+
+    return PrismaSystemMapper.toDomain(system)
+  }
+
   async delete(systemId: string): Promise<void> {
     await this.prisma.system.delete({
       where: { id: systemId },

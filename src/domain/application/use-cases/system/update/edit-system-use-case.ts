@@ -5,6 +5,7 @@ import { UsersRepository } from '@/domain/application/repositories/users-reposit
 import { System } from '@/domain/enterprise/entities/system/system'
 import { SystemStatus } from '@/domain/enterprise/entities/system/system-types'
 import { Injectable } from '@nestjs/common'
+import { SystemAlreadyExistsException } from '../exceptions/system-already-exists-exception'
 
 export interface EditSystemUseCaseRequest {
   userId: string
@@ -51,6 +52,15 @@ export class EditSystemUseCase {
 
     if (!system) {
       throw new ResourceNotFoundException()
+    }
+
+    if (attendanceEmail && system.attendanceEmail !== attendanceEmail) {
+      const systemWithSameEmail =
+        await this.systemsRepository.findByEmail(attendanceEmail)
+
+      if (systemWithSameEmail) {
+        throw new SystemAlreadyExistsException(attendanceEmail)
+      }
     }
 
     system.update({
