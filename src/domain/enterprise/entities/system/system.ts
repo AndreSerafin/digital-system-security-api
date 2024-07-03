@@ -6,11 +6,12 @@ import { SystemStatus } from './system-types'
 export interface SystemProps {
   description: string
   acronym: string
-  attendanceEmail: string
+  attendanceEmail?: string | null
   url: string
   status: SystemStatus
   lastUpdateJustification?: string | null
   lastUpdateAuthorId?: UniqueEntityId | null
+  lastUpdateAuthor?: string | null
   authorId: UniqueEntityId
 
   createdAt: Date
@@ -37,6 +38,8 @@ export class System extends Entity<SystemProps> {
     this.props.url = system.url ?? this.url
     this.props.lastUpdateAuthorId =
       system.lastUpdateAuthorId ?? this.lastUpdateAuthorId
+    this.props.lastUpdateAuthor =
+      system.lastUpdateAuthor ?? this.lastUpdateAuthor
     this.props.lastUpdateJustification =
       system.lastUpdateJustification ?? this.lastUpdateJustification
     this.props.status = system.status ?? this.status
@@ -70,6 +73,10 @@ export class System extends Entity<SystemProps> {
 
   get lastUpdateAuthorId() {
     return this.props.lastUpdateAuthorId
+  }
+
+  get lastUpdateAuthor() {
+    return this.props.lastUpdateAuthor
   }
 
   get lastUpdateJustification() {

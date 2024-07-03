@@ -60,6 +60,7 @@ export class EditSystemUseCase {
       status,
       url,
       lastUpdateAuthorId: currentUser.id,
+      lastUpdateAuthor: currentUser.name,
       lastUpdateJustification: updateJustification,
     })
 

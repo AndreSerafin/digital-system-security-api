@@ -6,7 +6,7 @@ import {
 import { System } from '@/domain/enterprise/entities/system/system'
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
-import { PrismaSystemMapper } from '../mappers/sytem-mapper'
+import { PrismaSystemMapper } from '../mappers/system-mapper'
 
 @Injectable()
 export class PrismaSystemsRepository implements SystemsRepository {

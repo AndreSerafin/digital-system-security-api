@@ -18,7 +18,7 @@ import { GetSystemByIdUseCase } from '@/domain/application/use-cases/system/get/
 import { DeleteSystemUseCase } from '@/domain/application/use-cases/system/delete/delete-system-use-case'
 
 import { EditSystemUseCase } from '@/domain/application/use-cases/system/update/edit-system-use-case'
-import { SystemPresenter } from '../../presenters/comment-presentert'
+import { SystemPresenter } from '../../presenters/system-presenter'
 import { ApiTags } from '@nestjs/swagger'
 import { CreateSystemUserDTO } from './dto/create-system'
 import { FetchSystemsDTO } from './dto/fetch-systems'

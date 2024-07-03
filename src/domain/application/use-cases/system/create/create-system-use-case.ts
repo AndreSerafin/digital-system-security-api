@@ -10,9 +10,9 @@ import { UserNotFoundException } from '../../user/exceptions/user-not-found-exce
 export interface CreateSystemUseCaseRequest {
   description: string
   acronym: string
-  attendanceEmail: string
+  attendanceEmail?: string
   url: string
-  status: SystemStatus
+  status?: SystemStatus
   authorId: string
 }
 
@@ -50,7 +50,7 @@ export class CreateSystemUseCase {
       attendanceEmail,
       authorId: new UniqueEntityId(authorId),
       description,
-      status,
+      status: status ?? SystemStatus.ACTIVE,
       url,
     })
 

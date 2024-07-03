@@ -38,11 +38,12 @@ model System {
 
   description             String
   acronym                 String
-  attendanceEmail         String       @unique()
+  attendanceEmail         String?      @unique()
   url                     String
   status                  SystemStatus
   lastUpdateJustification String?
   lastUpdateAuthorId      String?
+  lastUpdateAuthor        String?
   authorId                String
 
   createdAt DateTime

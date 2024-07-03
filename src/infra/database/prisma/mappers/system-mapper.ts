@@ -18,6 +18,7 @@ export class PrismaSystemMapper {
           ? new UniqueEntityId(raw.lastUpdateAuthorId)
           : undefined,
         lastUpdateJustification: raw.lastUpdateJustification,
+        lastUpdateAuthor: raw.lastUpdateAuthor,
         updatedAt: raw.updatedAt,
       },
       new UniqueEntityId(raw.id),
@@ -36,6 +37,7 @@ export class PrismaSystemMapper {
       createdAt: system.createdAt,
       lastUpdateAuthorId: system.lastUpdateAuthorId?.toString(),
       lastUpdateJustification: system.lastUpdateJustification,
+      lastUpdateAuthor: system.lastUpdateAuthor,
       updatedAt: system.updatedAt,
     }
   }
