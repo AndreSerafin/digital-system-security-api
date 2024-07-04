@@ -4,11 +4,13 @@ import { UserRole } from '@/domain/enterprise/entities/user/user-types'
 import { Injectable } from '@nestjs/common'
 
 export interface FetchUsersUseCaseRequest {
+  page: number
   email?: string
   name?: string
   role?: UserRole
 }
 export interface FetchUsersUseCaseResponse {
+  total: number
   users: User[]
 }
 
@@ -17,12 +19,16 @@ export class FetchUsersUseCase {
   constructor(private usersRepository: UsersRepository) {}
 
   async execute({
+    page,
     email,
     name,
     role,
   }: FetchUsersUseCaseRequest): Promise<FetchUsersUseCaseResponse> {
-    const users = await this.usersRepository.findMany({ email, name, role })
+    const result = await this.usersRepository.findMany(
+      { page },
+      { email, name, role },
+    )
 
-    return { users }
+    return result
   }
 }

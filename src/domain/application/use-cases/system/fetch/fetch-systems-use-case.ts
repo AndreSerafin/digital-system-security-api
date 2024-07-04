@@ -9,6 +9,7 @@ export interface FetchSystemsUseCaseRequest {
   attendanceEmail?: string
 }
 export interface FetchSystemsUseCaseResponse {
+  total: number
   systems: System[]
 }
 
@@ -22,11 +23,11 @@ export class FetchSystemsUseCase {
     attendanceEmail,
     description,
   }: FetchSystemsUseCaseRequest): Promise<FetchSystemsUseCaseResponse> {
-    const systems = await this.systemsRepository.findMany(
+    const result = await this.systemsRepository.findMany(
       { page },
       { acronym, attendanceEmail, description },
     )
 
-    return { systems }
+    return result
   }
 }

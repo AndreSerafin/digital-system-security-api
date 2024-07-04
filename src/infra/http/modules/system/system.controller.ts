@@ -68,7 +68,7 @@ export class SystemController {
 
     const systems = result.systems
 
-    return { systems: systems.map(SystemPresenter.toHTTP) }
+    return { total: result.total, systems: systems.map(SystemPresenter.toHTTP) }
   }
 
   @Get('/:systemId')

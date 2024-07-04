@@ -7,6 +7,11 @@ export interface QueryParams {
   attendanceEmail: string
 }
 
+export interface FindMany {
+  total: number
+  systems: System[]
+}
+
 export abstract class SystemsRepository {
   abstract create(system: System): Promise<void>
   abstract findById(systemId: string): Promise<System | null>
@@ -16,5 +21,5 @@ export abstract class SystemsRepository {
   abstract findMany(
     paginationParams: PaginationParams,
     queryParams: Partial<QueryParams>,
-  ): Promise<System[]>
+  ): Promise<FindMany>
 }

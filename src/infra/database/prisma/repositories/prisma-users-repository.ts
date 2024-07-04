@@ -1,11 +1,13 @@
 import {
   QueryParams,
   UsersRepository,
+  FindMany,
 } from '@/domain/application/repositories/users-repository'
 import { User } from '@/domain/enterprise/entities/user/user'
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
 import { PrismaUserMapper } from '../mappers/user-mapper'
+import { PaginationParams } from '@/core/repositories/pagination-params'
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
@@ -16,12 +18,28 @@ export class PrismaUsersRepository implements UsersRepository {
     await this.prisma.user.create({ data })
   }
 
-  async findMany({ email, name, role }: Partial<QueryParams>): Promise<User[]> {
+  async findMany(
+    { page }: Partial<PaginationParams>,
+    { email, name, role }: Partial<QueryParams>,
+  ): Promise<FindMany> {
     const users = await this.prisma.user.findMany({
       where: { email, name, role },
+      orderBy: { createdAt: 'desc' },
     })
 
-    return users.map(PrismaUserMapper.toDomain)
+    if (page) {
+      const paginatedUsers = users.slice((page - 10) * 1, page * 10)
+
+      return {
+        total: users.length,
+        users: paginatedUsers.map(PrismaUserMapper.toDomain),
+      }
+    }
+
+    return {
+      total: users.length,
+      users: users.map(PrismaUserMapper.toDomain),
+    }
   }
 
   async findById(userId: string): Promise<User | null> {

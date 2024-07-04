@@ -1,5 +1,6 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import {
+  FindMany,
   QueryParams,
   SystemsRepository,
 } from '@/domain/application/repositories/systems-repository'
@@ -62,20 +63,21 @@ export class PrismaSystemsRepository implements SystemsRepository {
   async findMany(
     { page }: PaginationParams,
     { acronym, attendanceEmail, description }: Partial<QueryParams>,
-  ): Promise<System[]> {
+  ): Promise<FindMany> {
     const systems = await this.prisma.system.findMany({
       where: {
         acronym: { contains: acronym, mode: 'insensitive' },
         attendanceEmail: { contains: attendanceEmail, mode: 'insensitive' },
         description: { contains: description, mode: 'insensitive' },
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
-      take: 20,
-      skip: (page - 1) * 20,
+      orderBy: { createdAt: 'desc' },
     })
 
-    return systems.map(PrismaSystemMapper.toDomain)
+    const paginatedSystems = systems.slice((page - 10) * 1, page * 10)
+
+    return {
+      total: systems.length,
+      systems: paginatedSystems.map(PrismaSystemMapper.toDomain),
+    }
   }
 }

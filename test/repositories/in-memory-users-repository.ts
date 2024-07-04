@@ -1,4 +1,6 @@
+import { PaginationParams } from '@/core/repositories/pagination-params'
 import {
+  FindMany,
   QueryParams,
   UsersRepository,
 } from '@/domain/application/repositories/users-repository'
@@ -31,7 +33,10 @@ export class InMemoryUsersRepository implements UsersRepository {
     return user
   }
 
-  async findMany(queryParams: Partial<QueryParams>): Promise<User[]> {
+  async findMany(
+    { page }: Partial<PaginationParams>,
+    queryParams: Partial<QueryParams>,
+  ): Promise<FindMany> {
     const { email, name, role } = queryParams
     const filters = (item: User) =>
       (email !== undefined ? item.email === email : true) &&
@@ -40,6 +45,13 @@ export class InMemoryUsersRepository implements UsersRepository {
 
     const users = this.items.filter(filters)
 
-    return users
+    if (page) {
+      return {
+        total: this.items.length,
+        users: users.slice((page - 1) * 20, page * 20),
+      }
+    }
+
+    return { total: this.items.length, users }
   }
 }

@@ -27,11 +27,14 @@ export class CreateFirstSuperAdminUserUseCase {
     name,
     password,
   }: CreateFirstSuperAdminUserUseCaseRequest): Promise<CreateFirstSuperAdminUserUseCaseResponse> {
-    const superAdminUsers = await this.usersRepository.findMany({
-      role: UserRole.SUPER_ADMIN,
-    })
+    const superAdminUsers = await this.usersRepository.findMany(
+      {},
+      {
+        role: UserRole.SUPER_ADMIN,
+      },
+    )
 
-    if (superAdminUsers.length !== 0) {
+    if (superAdminUsers.users.length !== 0) {
       throw new UserAlreadyExistsException(UserRole.SUPER_ADMIN)
     }
     const userWithSameEmail = await this.usersRepository.findByEmail(email)

@@ -1,5 +1,6 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import {
+  FindMany,
   QueryParams,
   SystemsRepository,
 } from '@/domain/application/repositories/systems-repository'
@@ -35,7 +36,7 @@ export class InMemorySystemsRepository implements SystemsRepository {
   async findMany(
     { page }: PaginationParams,
     queryParams: Partial<QueryParams>,
-  ): Promise<System[]> {
+  ): Promise<FindMany> {
     const { acronym, attendanceEmail, description } = queryParams
 
     const filters = (item: System) =>
@@ -47,7 +48,7 @@ export class InMemorySystemsRepository implements SystemsRepository {
 
     const systems = this.items.filter(filters).slice((page - 1) * 20, page * 20)
 
-    return systems
+    return { total: this.items.length, systems }
   }
 
   async save(system: System): Promise<void> {
