@@ -58,7 +58,7 @@ export class SystemController {
     @Query()
     queryParams: FetchSystemsDTO,
   ) {
-    const { page, acronym, attendance_email, description } = queryParams
+    const { page = 1, acronym, attendance_email, description } = queryParams
     const result = await this.fetchSystemsUseCase.execute({
       page,
       acronym,

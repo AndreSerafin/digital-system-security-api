@@ -18,7 +18,9 @@ export abstract class UsersRepository {
   abstract findById(userId: string): Promise<User | null>
   abstract findByEmail(email: string): Promise<User | null>
   abstract findMany(
-    paginationParams: Partial<PaginationParams>,
+    paginationParams: PaginationParams,
     queryParams: Partial<QueryParams>,
   ): Promise<FindMany>
+
+  abstract findAll(queryParams: Partial<QueryParams>): Promise<FindMany>
 }

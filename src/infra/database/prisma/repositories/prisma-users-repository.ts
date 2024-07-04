@@ -19,25 +19,41 @@ export class PrismaUsersRepository implements UsersRepository {
   }
 
   async findMany(
-    { page }: Partial<PaginationParams>,
+    { page }: PaginationParams,
     { email, name, role }: Partial<QueryParams>,
   ): Promise<FindMany> {
     const users = await this.prisma.user.findMany({
       where: { email, name, role },
       orderBy: { createdAt: 'desc' },
+      take: 20,
+      skip: (page - 1) * 20,
     })
 
-    if (page) {
-      const paginatedUsers = users.slice((page - 10) * 1, page * 10)
-
-      return {
-        total: users.length,
-        users: paginatedUsers.map(PrismaUserMapper.toDomain),
-      }
-    }
+    const total = await this.prisma.user.count({
+      where: { email, name, role },
+    })
 
     return {
-      total: users.length,
+      total,
+      users: users.map(PrismaUserMapper.toDomain),
+    }
+  }
+
+  async findAll({
+    email,
+    name,
+    role,
+  }: Partial<QueryParams>): Promise<FindMany> {
+    const users = await this.prisma.user.findMany({
+      where: { email, name, role },
+    })
+
+    const total = await this.prisma.user.count({
+      where: { email, name, role },
+    })
+
+    return {
+      total,
       users: users.map(PrismaUserMapper.toDomain),
     }
   }

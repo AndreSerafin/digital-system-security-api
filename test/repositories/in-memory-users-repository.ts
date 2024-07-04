@@ -54,4 +54,16 @@ export class InMemoryUsersRepository implements UsersRepository {
 
     return { total: this.items.length, users }
   }
+
+  async findAll(queryParams: Partial<QueryParams>): Promise<FindMany> {
+    const { email, name, role } = queryParams
+    const filters = (item: User) =>
+      (email !== undefined ? item.email === email : true) &&
+      (name !== undefined ? item.name === name : true) &&
+      (role !== undefined ? item.role === role : true)
+
+    const users = this.items.filter(filters)
+
+    return { total: this.items.length, users }
+  }
 }

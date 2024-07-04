@@ -70,14 +70,24 @@ export class PrismaSystemsRepository implements SystemsRepository {
         attendanceEmail: { contains: attendanceEmail, mode: 'insensitive' },
         description: { contains: description, mode: 'insensitive' },
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 20,
+      skip: (page - 1) * 20,
     })
 
-    const paginatedSystems = systems.slice((page - 10) * 1, page * 10)
+    const total = await this.prisma.system.count({
+      where: {
+        acronym: { contains: acronym },
+        attendanceEmail: { contains: attendanceEmail },
+        description: { contains: description },
+      },
+    })
 
     return {
-      total: systems.length,
-      systems: paginatedSystems.map(PrismaSystemMapper.toDomain),
+      total,
+      systems: systems.map(PrismaSystemMapper.toDomain),
     }
   }
 }

@@ -73,7 +73,9 @@ describe('Fetch Systems Controller (E2E)', () => {
     expect(systemsOnDatabase).toBeTruthy()
 
     expect(systemsOnDatabase).toHaveLength(5)
+
     expect(response.body).toEqual({
+      total: 5,
       systems: expect.arrayContaining([
         expect.objectContaining({ acronym: 'SYS-01' }),
         expect.objectContaining({ acronym: 'SYS-02' }),

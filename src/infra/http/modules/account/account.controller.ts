@@ -33,7 +33,7 @@ export class AccountController {
 
   @Get()
   async fetch(@Query() queryParams: FetchAccountsDTO) {
-    const { page, email, name, role } = queryParams
+    const { page = 1, email, name, role } = queryParams
     const { total, users } = await this.fetchUsersUseCase.execute({
       page,
       email,
